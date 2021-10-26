@@ -57,6 +57,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/api/types/walletConnect/pairingData.dart';
@@ -584,7 +585,7 @@ class _WalletAppState extends State<WalletApp> {
       },
       child: ScreenUtilInit(
           designSize: Size(1170, 2532),
-          builder: () => MaterialApp(
+          builder: () => GetMaterialApp(
                 title: 'Polkawallet',
                 theme: _theme ??
                     _getAppTheme(
