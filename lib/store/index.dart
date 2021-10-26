@@ -3,9 +3,9 @@ import 'package:app/store/assets.dart';
 import 'package:app/store/parachain.dart';
 import 'package:app/store/settings.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 
-class AppStore {
+class AppStore extends GetxController {
   AppStore(this.storage);
 
   final GetStorage storage;
@@ -15,7 +15,6 @@ class AppStore {
   AssetsStore assets;
   ParachainStore parachain;
 
-  @action
   Future<void> init() async {
     settings = SettingsStore(storage);
     await settings.init();

@@ -8,7 +8,7 @@ import 'package:app/pages/walletConnect/wcSessionsPage.dart';
 import 'package:app/service/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
 import 'package:polkawallet_plugin_kusama/common/constants.dart';
@@ -189,31 +189,33 @@ class _HomePageState extends State<HomePage> {
                     ))
                 .toList(),
           ),
-          Observer(builder: (_) {
-            final walletConnectAlive =
-                widget.service.store.account.wcSessions.length > 0;
-            final walletConnecting =
-                widget.service.store.account.walletConnectPairing;
-            return walletConnectAlive || walletConnecting
-                ? Container(
-                    margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height / 4),
-                    child: FloatingActionButton(
-                      backgroundColor: Theme.of(context).cardColor,
-                      child: walletConnecting
-                          ? CupertinoActivityIndicator()
-                          : Image.asset(
-                              'assets/images/wallet_connect_logo.png'),
-                      onPressed: walletConnectAlive
-                          ? () {
-                              Navigator.of(context)
-                                  .pushNamed(WCSessionsPage.route);
-                            }
-                          : () => null,
-                    ),
-                  )
-                : Container();
-          })
+          GetBuilder(
+              init: widget.service.store,
+              builder: (_) {
+                final walletConnectAlive =
+                    widget.service.store.account.wcSessions.length > 0;
+                final walletConnecting =
+                    widget.service.store.account.walletConnectPairing;
+                return walletConnectAlive || walletConnecting
+                    ? Container(
+                        margin: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).size.height / 4),
+                        child: FloatingActionButton(
+                          backgroundColor: Theme.of(context).cardColor,
+                          child: walletConnecting
+                              ? CupertinoActivityIndicator()
+                              : Image.asset(
+                                  'assets/images/wallet_connect_logo.png'),
+                          onPressed: walletConnectAlive
+                              ? () {
+                                  Navigator.of(context)
+                                      .pushNamed(WCSessionsPage.route);
+                                }
+                              : () => null,
+                        ),
+                      )
+                    : Container();
+              })
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

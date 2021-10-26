@@ -3,7 +3,7 @@ import 'package:app/service/index.dart';
 import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_sdk/api/types/addressIconData.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -56,7 +56,8 @@ class _BackupAccountPageState extends State<BackupAccountPage> {
   Widget _buildStep0(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_app, 'account');
 
-    return Observer(
+    return GetBuilder(
+      init: widget.service.store,
       builder: (_) {
         final mnemonics = widget.service.store.account.newAccount.key ?? '';
         return Scaffold(

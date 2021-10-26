@@ -5,7 +5,7 @@ import 'package:app/service/walletApi.dart';
 import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
@@ -386,326 +386,332 @@ class _AcaCrowdLoanFormPageState extends State<AcaCrowdLoanFormPage> {
 
   @override
   Widget build(_) {
-    return Observer(builder: (BuildContext context) {
-      final dic = I18n.of(context).getDic(i18n_full_dic_app, 'public');
-      final decimals =
-          (widget.service.plugin.networkState.tokenDecimals ?? [12])[0];
+    return GetBuilder(
+        init: widget.service.store,
+        builder: (_) {
+          final dic = I18n.of(context).getDic(i18n_full_dic_app, 'public');
+          final decimals =
+              (widget.service.plugin.networkState.tokenDecimals ?? [12])[0];
 
-      final titleColor = Colors.black87;
-      final errorStyle = TextStyle(color: Colors.red, fontSize: 10);
-      final karStyle = TextStyle(
-          color: titleColor, fontSize: 26, fontWeight: FontWeight.bold);
-      final karKeyStyle = TextStyle(color: titleColor);
-      final karInfoStyle = TextStyle(
-          color: acaThemeColor, fontSize: 20, fontWeight: FontWeight.bold);
+          final titleColor = Colors.black87;
+          final errorStyle = TextStyle(color: Colors.red, fontSize: 10);
+          final karStyle = TextStyle(
+              color: titleColor, fontSize: 26, fontWeight: FontWeight.bold);
+          final karKeyStyle = TextStyle(color: titleColor);
+          final karInfoStyle = TextStyle(
+              color: acaThemeColor, fontSize: 20, fontWeight: FontWeight.bold);
 
-      final AcaCrowdLoanPageParams params =
-          ModalRoute.of(context).settings.arguments;
-      final balanceInt = Fmt.balanceInt(
-          widget.service.plugin.balances.native.availableBalance.toString());
-      final balanceView =
-          Fmt.priceFloorBigInt(balanceInt, decimals, lengthMax: 8);
+          final AcaCrowdLoanPageParams params =
+              ModalRoute.of(context).settings.arguments;
+          final balanceInt = Fmt.balanceInt(widget
+              .service.plugin.balances.native.availableBalance
+              .toString());
+          final balanceView =
+              Fmt.priceFloorBigInt(balanceInt, decimals, lengthMax: 8);
 
-      final isConnected = widget.connectedNode != null;
+          final isConnected = widget.connectedNode != null;
 
-      final minContribute = params.ploType == AcaPloType.direct
-          ? _contributeMin
-          : _contributeMin / 5;
+          final minContribute = params.ploType == AcaPloType.direct
+              ? _contributeMin
+              : _contributeMin / 5;
 
-      final double amountAca =
-          _amountValid ? _amount * _rewardMultiplier / _rewardDivider : 0;
-      final raised = BigInt.parse(params.fundInfo['raised'].toString());
-      double ratioAcaMax = raised > AcaCrowdLoanPage.contributeAmountMax
-          ? AcaCrowdLoanPage.contributeAmountMaxDivider / raised
-          : AcaCrowdLoanPage.rewardAmountMax;
-      if (ratioAcaMax < 3) {
-        ratioAcaMax = 3;
-      }
+          final double amountAca =
+              _amountValid ? _amount * _rewardMultiplier / _rewardDivider : 0;
+          final raised = BigInt.parse(params.fundInfo['raised'].toString());
+          double ratioAcaMax = raised > AcaCrowdLoanPage.contributeAmountMax
+              ? AcaCrowdLoanPage.contributeAmountMaxDivider / raised
+              : AcaCrowdLoanPage.rewardAmountMax;
+          if (ratioAcaMax < 3) {
+            ratioAcaMax = 3;
+          }
 
-      final double karReward = _karRewardValid ? amountAca * _karRewardRate : 0;
+          final double karReward =
+              _karRewardValid ? amountAca * _karRewardRate : 0;
 
-      double acaAmountTotal = amountAca * (_referralValid ? 1.05 : 1);
-      double acaPromotion = 0;
-      if (params.promotion['result']) {
-        if (params.promotion['acaRate'] > 0) {
-          acaPromotion = amountAca * params.promotion['acaRate'];
-        }
-      }
-      acaAmountTotal += acaPromotion;
-      acaAmountTotal += karReward;
-      return AcaPloPageLayout(
-          dic['auction.contribute'],
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                child: Image.asset("assets/images/public/aca_plo_bg_1.png"),
-              ),
-              _getTitle(dic['auction.address'], marginTop: 0),
-              Container(
-                margin: EdgeInsets.only(
-                    left: 16, right: 16, top: 20.h, bottom: 16.h),
-                child: AddressFormItem(
-                  widget.service.keyring.current,
-                  svg: widget.service.keyring.current.icon,
-                  color: acaThemeColor,
-                  borderWidth: 4.w,
-                  imageRight: 48.w,
-                  margin: EdgeInsets.zero,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
+          double acaAmountTotal = amountAca * (_referralValid ? 1.05 : 1);
+          double acaPromotion = 0;
+          if (params.promotion['result']) {
+            if (params.promotion['acaRate'] > 0) {
+              acaPromotion = amountAca * params.promotion['acaRate'];
+            }
+          }
+          acaAmountTotal += acaPromotion;
+          acaAmountTotal += karReward;
+          return AcaPloPageLayout(
+              dic['auction.contribute'],
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: _getTitle(dic['auction.amount'])),
-                  Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: Text(
-                      '${dic['auction.balance']}: $balanceView DOT',
-                      style: TextStyle(color: acaThemeColor, fontSize: 13),
+                  Container(
+                    width: double.infinity,
+                    child: Image.asset("assets/images/public/aca_plo_bg_1.png"),
+                  ),
+                  _getTitle(dic['auction.address'], marginTop: 0),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 16, right: 16, top: 20.h, bottom: 16.h),
+                    child: AddressFormItem(
+                      widget.service.keyring.current,
+                      svg: widget.service.keyring.current.icon,
+                      color: acaThemeColor,
+                      borderWidth: 4.w,
+                      imageRight: 48.w,
+                      margin: EdgeInsets.zero,
                     ),
                   ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    left: 16, right: 16, top: 20.h, bottom: 16.h),
-                child: CupertinoTextField(
-                  padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
-                  placeholder: dic['auction.amount1'],
-                  placeholderStyle:
-                      TextStyle(fontSize: 16, color: acaThemeColor),
-                  style: TextStyle(color: titleColor, fontSize: 18),
-                  decoration: BoxDecoration(
-                    color: _amountFocusNode.hasFocus
-                        ? acaThemeColor.shade100
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 4.w, color: acaThemeColor),
-                  ),
-                  cursorColor: acaThemeColor,
-                  clearButtonMode: OverlayVisibilityMode.editing,
-                  inputFormatters: [UI.decimalInputFormatter(decimals)],
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  focusNode: _amountFocusNode,
-                  onChanged: (v) =>
-                      _onAmountChange(v, balanceInt, params.promotion),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 16, bottom: 4),
-                child: _amount == 0 || _amountValid
-                    ? Container()
-                    : Text(
-                        _amountEnough
-                            ? '${dic['auction.invalid']} ${dic['auction.amount.error']} ${minContribute.toInt()} DOT'
-                            : dic['balance.insufficient'],
-                        style: errorStyle,
-                      ),
-              ),
-              _getTitle(dic['auction.referral']),
-              Container(
-                margin: EdgeInsets.only(
-                    left: 16, right: 16, top: 20.h, bottom: 16.h),
-                child: CupertinoTextField(
-                  padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
-                  placeholder: dic['auction.referral'],
-                  placeholderStyle:
-                      TextStyle(fontSize: 16, color: acaThemeColor),
-                  style: TextStyle(color: titleColor, fontSize: 18),
-                  decoration: BoxDecoration(
-                    color: _referralFocusNode.hasFocus
-                        ? acaThemeColor.shade100
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 4.w, color: acaThemeColor),
-                  ),
-                  cursorColor: acaThemeColor,
-                  clearButtonMode: OverlayVisibilityMode.editing,
-                  focusNode: _referralFocusNode,
-                  onChanged: (v) => _onReferralChange(v),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 16, bottom: 4),
-                child: _referral.isEmpty || _referralValid
-                    ? Container()
-                    : Text(
-                        '${dic['auction.invalid']} ${dic['auction.referral']}',
-                        style: errorStyle,
-                      ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    left: 16, right: 16, top: 48.h, bottom: 16.h),
-                padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  border: Border.all(width: 4.w, color: acaThemeColor),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    params.ploType == AcaPloType.proxy
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(dic['auction.receive.dot'],
-                                  style: karKeyStyle),
-                              Text(
-                                  '${Fmt.priceFloor(_amount, lengthMax: 4)} lcDOT',
-                                  style: karStyle),
-                              Divider(color: acaThemeColor),
-                            ],
-                          )
-                        : Container(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 4),
-                          child:
-                              Text(dic['auction.estimate'], style: karKeyStyle),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(child: _getTitle(dic['auction.amount'])),
+                      Padding(
+                        padding: EdgeInsets.only(right: 16),
+                        child: Text(
+                          '${dic['auction.balance']}: $balanceView DOT',
+                          style: TextStyle(color: acaThemeColor, fontSize: 13),
                         ),
-                        TapTooltip(
-                          message: '\n${dic['auction.note']}\n',
-                          child: Icon(
-                            Icons.info,
-                            size: 16,
-                            color: Theme.of(context).disabledColor,
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 16, right: 16, top: 20.h, bottom: 16.h),
+                    child: CupertinoTextField(
+                      padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
+                      placeholder: dic['auction.amount1'],
+                      placeholderStyle:
+                          TextStyle(fontSize: 16, color: acaThemeColor),
+                      style: TextStyle(color: titleColor, fontSize: 18),
+                      decoration: BoxDecoration(
+                        color: _amountFocusNode.hasFocus
+                            ? acaThemeColor.shade100
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        border: Border.all(width: 4.w, color: acaThemeColor),
+                      ),
+                      cursorColor: acaThemeColor,
+                      clearButtonMode: OverlayVisibilityMode.editing,
+                      inputFormatters: [UI.decimalInputFormatter(decimals)],
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      focusNode: _amountFocusNode,
+                      onChanged: (v) =>
+                          _onAmountChange(v, balanceInt, params.promotion),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 16, bottom: 4),
+                    child: _amount == 0 || _amountValid
+                        ? Container()
+                        : Text(
+                            _amountEnough
+                                ? '${dic['auction.invalid']} ${dic['auction.amount.error']} ${minContribute.toInt()} DOT'
+                                : dic['balance.insufficient'],
+                            style: errorStyle,
                           ),
-                        )
-                      ],
-                    ),
-                    Text(
-                        '${Fmt.priceFloor(acaAmountTotal, lengthMax: 4)} - ${Fmt.priceFloor(acaAmountTotal * ratioAcaMax / 3, lengthMax: 4)} ACA',
-                        style: karStyle),
-                    amountAca > 0
-                        ? RewardDetailPanel(
-                            acaAmountMin: amountAca,
-                            ratioAcaMax: ratioAcaMax,
-                            referralValid: _referralValid,
-                            karReward: karReward,
-                            karRewardRate: _karRewardRate,
-                            promotion: params.promotion,
-                            acaPromotion: acaPromotion)
-                        : Container(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          dic['auction.init'],
-                          style: karKeyStyle,
-                        ),
-                        Text('20%', style: karInfoStyle),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(dic['auction.vest'], style: karKeyStyle),
-                        Text('80%', style: karInfoStyle),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(dic['auction.lease'], style: karKeyStyle),
-                        Text('24 Months', style: karInfoStyle),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              _getTitle(dic['auction.email']),
-              Container(
-                margin: EdgeInsets.only(
-                    left: 16, right: 16, top: 20.h, bottom: 16.h),
-                child: CupertinoTextField(
-                  padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
-                  placeholder: 'Email (optional)',
-                  placeholderStyle:
-                      TextStyle(fontSize: 16, color: acaThemeColor),
-                  style: TextStyle(fontSize: 18),
-                  decoration: BoxDecoration(
-                    color: _emailFocusNode.hasFocus
-                        ? acaThemeColor.shade100
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 4.w, color: acaThemeColor),
                   ),
-                  cursorColor: acaThemeColor,
-                  clearButtonMode: OverlayVisibilityMode.editing,
-                  focusNode: _emailFocusNode,
-                  onChanged: _onEmailChange,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 16, bottom: 4),
-                child: _email.isEmpty || _emailValid
-                    ? Container()
-                    : Text(
-                        '${dic['auction.invalid']} ${dic['auction.email']}',
-                        style: TextStyle(color: Colors.red, fontSize: 10),
+                  _getTitle(dic['auction.referral']),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 16, right: 16, top: 20.h, bottom: 16.h),
+                    child: CupertinoTextField(
+                      padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
+                      placeholder: dic['auction.referral'],
+                      placeholderStyle:
+                          TextStyle(fontSize: 16, color: acaThemeColor),
+                      style: TextStyle(color: titleColor, fontSize: 18),
+                      decoration: BoxDecoration(
+                        color: _referralFocusNode.hasFocus
+                            ? acaThemeColor.shade100
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        border: Border.all(width: 4.w, color: acaThemeColor),
                       ),
-              ),
-              _email.isNotEmpty
-                  ? Container(
-                      margin: EdgeInsets.only(left: 16, right: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Theme(
-                            child: SizedBox(
-                              height: 32,
-                              width: 32,
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 8),
-                                child: Checkbox(
-                                  value: _emailAccept,
-                                  onChanged: (v) {
-                                    setState(() {
-                                      _emailAccept = v;
-                                    });
-                                  },
+                      cursorColor: acaThemeColor,
+                      clearButtonMode: OverlayVisibilityMode.editing,
+                      focusNode: _referralFocusNode,
+                      onChanged: (v) => _onReferralChange(v),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 16, bottom: 4),
+                    child: _referral.isEmpty || _referralValid
+                        ? Container()
+                        : Text(
+                            '${dic['auction.invalid']} ${dic['auction.referral']}',
+                            style: errorStyle,
+                          ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 16, right: 16, top: 48.h, bottom: 16.h),
+                    padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(width: 4.w, color: acaThemeColor),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        params.ploType == AcaPloType.proxy
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(dic['auction.receive.dot'],
+                                      style: karKeyStyle),
+                                  Text(
+                                      '${Fmt.priceFloor(_amount, lengthMax: 4)} lcDOT',
+                                      style: karStyle),
+                                  Divider(color: acaThemeColor),
+                                ],
+                              )
+                            : Container(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 4),
+                              child: Text(dic['auction.estimate'],
+                                  style: karKeyStyle),
+                            ),
+                            TapTooltip(
+                              message: '\n${dic['auction.note']}\n',
+                              child: Icon(
+                                Icons.info,
+                                size: 16,
+                                color: Theme.of(context).disabledColor,
+                              ),
+                            )
+                          ],
+                        ),
+                        Text(
+                            '${Fmt.priceFloor(acaAmountTotal, lengthMax: 4)} - ${Fmt.priceFloor(acaAmountTotal * ratioAcaMax / 3, lengthMax: 4)} ACA',
+                            style: karStyle),
+                        amountAca > 0
+                            ? RewardDetailPanel(
+                                acaAmountMin: amountAca,
+                                ratioAcaMax: ratioAcaMax,
+                                referralValid: _referralValid,
+                                karReward: karReward,
+                                karRewardRate: _karRewardRate,
+                                promotion: params.promotion,
+                                acaPromotion: acaPromotion)
+                            : Container(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              dic['auction.init'],
+                              style: karKeyStyle,
+                            ),
+                            Text('20%', style: karInfoStyle),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(dic['auction.vest'], style: karKeyStyle),
+                            Text('80%', style: karInfoStyle),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(dic['auction.lease'], style: karKeyStyle),
+                            Text('24 Months', style: karInfoStyle),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  _getTitle(dic['auction.email']),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 16, right: 16, top: 20.h, bottom: 16.h),
+                    child: CupertinoTextField(
+                      padding: EdgeInsets.fromLTRB(12, 14, 12, 14),
+                      placeholder: 'Email (optional)',
+                      placeholderStyle:
+                          TextStyle(fontSize: 16, color: acaThemeColor),
+                      style: TextStyle(fontSize: 18),
+                      decoration: BoxDecoration(
+                        color: _emailFocusNode.hasFocus
+                            ? acaThemeColor.shade100
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        border: Border.all(width: 4.w, color: acaThemeColor),
+                      ),
+                      cursorColor: acaThemeColor,
+                      clearButtonMode: OverlayVisibilityMode.editing,
+                      focusNode: _emailFocusNode,
+                      onChanged: _onEmailChange,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 16, bottom: 4),
+                    child: _email.isEmpty || _emailValid
+                        ? Container()
+                        : Text(
+                            '${dic['auction.invalid']} ${dic['auction.email']}',
+                            style: TextStyle(color: Colors.red, fontSize: 10),
+                          ),
+                  ),
+                  _email.isNotEmpty
+                      ? Container(
+                          margin: EdgeInsets.only(left: 16, right: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Theme(
+                                child: SizedBox(
+                                  height: 32,
+                                  width: 32,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Checkbox(
+                                      value: _emailAccept,
+                                      onChanged: (v) {
+                                        setState(() {
+                                          _emailAccept = v;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                data: ThemeData(
+                                  primarySwatch: acaThemeColor,
+                                  unselectedWidgetColor:
+                                      acaThemeColor, // Your color
                                 ),
                               ),
-                            ),
-                            data: ThemeData(
-                              primarySwatch: acaThemeColor,
-                              unselectedWidgetColor:
-                                  acaThemeColor, // Your color
-                            ),
+                              Expanded(
+                                  child: Text(
+                                dic['auction.notify'],
+                                style:
+                                    TextStyle(color: titleColor, fontSize: 10),
+                              ))
+                            ],
                           ),
-                          Expanded(
-                              child: Text(
-                            dic['auction.notify'],
-                            style: TextStyle(color: titleColor, fontSize: 10),
-                          ))
-                        ],
-                      ),
-                    )
-                  : Container(height: 16),
-              Container(
-                margin:
-                    EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 32),
-                child: RoundedButton(
-                  text: isConnected
-                      ? dic['auction.submit']
-                      : dic['auction.connecting'],
-                  icon: _submitting || !isConnected
-                      ? CupertinoActivityIndicator()
-                      : null,
-                  color: acaThemeColor,
-                  borderRadius: 8,
-                  onPressed: () => _signAndSubmit(params.account),
-                ),
-              )
-            ],
-          ));
-    });
+                        )
+                      : Container(height: 16),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 16, right: 16, top: 4, bottom: 32),
+                    child: RoundedButton(
+                      text: isConnected
+                          ? dic['auction.submit']
+                          : dic['auction.connecting'],
+                      icon: _submitting || !isConnected
+                          ? CupertinoActivityIndicator()
+                          : null,
+                      color: acaThemeColor,
+                      borderRadius: 8,
+                      onPressed: () => _signAndSubmit(params.account),
+                    ),
+                  )
+                ],
+              ));
+        });
   }
 }
 

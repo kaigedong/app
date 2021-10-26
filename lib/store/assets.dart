@@ -1,16 +1,10 @@
 import 'package:app/store/types/transferData.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 
-part 'assets.g.dart';
-
-class AssetsStore extends _AssetsStore with _$AssetsStore {
-  AssetsStore(GetStorage storage) : super(storage);
-}
-
-abstract class _AssetsStore with Store {
-  _AssetsStore(this.storage);
+class AssetsStore extends GetxController {
+  AssetsStore(this.storage);
 
   final GetStorage storage;
 
@@ -18,21 +12,17 @@ abstract class _AssetsStore with Store {
 
   final String customAssetsStoreKey = 'assets_list';
 
-  @observable
-  ObservableList<TransferData> txs = ObservableList<TransferData>();
+  List<TransferData> txs = <TransferData>[];
 
-  @observable
-  ObservableMap<String, double> marketPrices = ObservableMap<String, double>();
+  Map<String, double> marketPrices = Map<String, double>();
 
-  @observable
   Map<String, bool> customAssets = {};
 
-  @action
   Future<void> clearTxs() async {
     txs.clear();
+    update();
   }
 
-  @action
   Future<void> addTxs(
     Map res,
     KeyPairData acc,
@@ -50,22 +40,22 @@ abstract class _AssetsStore with Store {
     if (shouldCache) {
       storage.write('${pluginName}_$acc', ls);
     }
+    update();
   }
 
-  @action
   void setMarketPrices(Map<String, double> data) {
     marketPrices.addAll(data);
+    update();
   }
 
-  @action
   void setCustomAssets(
       KeyPairData acc, String pluginName, Map<String, bool> data) {
     customAssets = data;
 
     _storeCustomAssets(acc, pluginName, data);
+    update();
   }
 
-  @action
   Future<void> loadAccountCache(KeyPairData acc, String pluginName) async {
     // return if currentAccount not exist
     if (acc == null) {
@@ -74,10 +64,9 @@ abstract class _AssetsStore with Store {
 
     final List cache = await storage.read('${pluginName}_$cacheTxsKey');
     if (cache != null) {
-      txs = ObservableList.of(
-          cache.map((i) => TransferData.fromJson(i)).toList());
+      txs = cache.map((i) => TransferData.fromJson(i)).toList();
     } else {
-      txs = ObservableList();
+      txs = [];
     }
 
     final cachedAssetsList =
@@ -87,9 +76,9 @@ abstract class _AssetsStore with Store {
     } else {
       customAssets = Map<String, bool>();
     }
+    update();
   }
 
-  @action
   Future<void> loadCache(KeyPairData acc, String pluginName) async {
     loadAccountCache(acc, pluginName);
   }

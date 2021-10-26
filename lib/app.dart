@@ -55,7 +55,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -434,14 +433,13 @@ class _WalletAppState extends State<WalletApp> {
       ...pluginPages,
 
       /// basic pages
-      HomePage.route: (_) => WillPopScopWrapper(
-            Observer(
-              builder: (BuildContext context) {
-                final accountCreated =
-                    _service?.store?.account?.accountCreated ?? false;
-                return FutureBuilder<int>(
-                  future: _startApp(context),
-                  builder: (_, AsyncSnapshot<int> snapshot) {
+      HomePage.route: (BuildContext context) =>
+          WillPopScopWrapper(FutureBuilder<int>(
+            future: _startApp(context),
+            builder: (_, AsyncSnapshot<int> snapshot) {
+              return GetBuilder(
+                  init: _store,
+                  builder: (_) {
                     if (snapshot.hasData && _service != null) {
                       return snapshot.data > 0
                           ? HomePage(_service, _connectedNode,
@@ -450,11 +448,9 @@ class _WalletAppState extends State<WalletApp> {
                     } else {
                       return Container(color: Theme.of(context).canvasColor);
                     }
-                  },
-                );
-              },
-            ),
-          ),
+                  });
+            },
+          )),
       TxConfirmPage.route: (_) => TxConfirmPage(
             _service.plugin,
             _keyring,

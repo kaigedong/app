@@ -1,64 +1,48 @@
-import 'package:mobx/mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_sdk/api/types/recoveryInfo.dart';
 import 'package:polkawallet_sdk/api/types/walletConnect/pairingData.dart';
 
-part 'account.g.dart';
+class AccountStore extends GetxController {
+  AccountStore();
 
-class AccountStore extends _AccountStore with _$AccountStore {
-  AccountStore() : super();
-}
-
-abstract class _AccountStore with Store {
-  _AccountStore();
-
-  @observable
   AccountCreate newAccount = AccountCreate();
 
-  @observable
   bool accountCreated = false;
 
-  @observable
-  ObservableMap<int, Map<String, String>> pubKeyAddressMap =
-      ObservableMap<int, Map<String, String>>();
+  Map<int, Map<String, String>> pubKeyAddressMap =
+      Map<int, Map<String, String>>();
 
-  @observable
-  ObservableMap<String, String> addressIconsMap =
-      ObservableMap<String, String>();
+  Map<String, String> addressIconsMap = Map<String, String>();
 
-  @observable
   RecoveryInfo recoveryInfo = RecoveryInfo();
 
-  @observable
   bool showBanner = false;
 
-  @observable
   bool walletConnectPairing = false;
 
-  @observable
-  ObservableList<WCPairedData> wcSessions = ObservableList<WCPairedData>();
+  List<WCPairedData> wcSessions = <WCPairedData>[];
 
-  @action
   void setNewAccount(String name, String password) {
     newAccount.name = name;
     newAccount.password = password;
+    update();
   }
 
-  @action
   void setNewAccountKey(String key) {
     newAccount.key = key;
+    update();
   }
 
-  @action
   void resetNewAccount() {
     newAccount = AccountCreate();
+    update();
   }
 
-  @action
   void setAccountCreated() {
     accountCreated = true;
+    update();
   }
 
-  @action
   void setPubKeyAddressMap(Map<String, Map> data) {
     data.keys.forEach((ss58) {
       // get old data map
@@ -71,55 +55,51 @@ abstract class _AccountStore with Store {
       // update state
       pubKeyAddressMap[int.parse(ss58)] = addresses;
     });
+    update();
   }
 
-  @action
   void setAddressIconsMap(List list) {
     list.forEach((i) {
       addressIconsMap[i[0]] = i[1];
     });
+    update();
   }
 
-  @action
   void setAccountRecoveryInfo(Map json) {
     recoveryInfo = json != null ? RecoveryInfo.fromJson(json) : RecoveryInfo();
+    update();
   }
 
-  @action
   void setWCPairing(bool pairing) {
     walletConnectPairing = pairing;
+    update();
   }
 
-  @action
   void setWCSessions(List<WCPairedData> sessions) {
     wcSessions = sessions;
+    update();
   }
 
-  @action
   void createWCSession(WCPairedData session) {
     wcSessions.add(session);
+    update();
   }
 
-  @action
   void deleteWCSession(WCPairedData session) {
     wcSessions.removeWhere((e) => e.topic == session.topic);
+    update();
   }
 
-  @action
   void setBannerVisible(bool visible) {
     showBanner = visible;
+    update();
   }
 }
 
-class AccountCreate extends _AccountCreate with _$AccountCreate {}
-
-abstract class _AccountCreate with Store {
-  @observable
+class AccountCreate extends GetxController {
   String name = '';
 
-  @observable
   String password = '';
 
-  @observable
   String key = '';
 }

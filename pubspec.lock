@@ -392,7 +392,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_mobx:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_mobx
       url: "https://pub.flutter-io.cn"
@@ -444,7 +444,7 @@ packages:
     source: hosted
     version: "2.1.2"
   get:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: get
       url: "https://pub.flutter-io.cn"
@@ -890,11 +890,9 @@ packages:
   polkawallet_plugin_kusama:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "4b450366c90ec7ac2fa4f332600cb756fce82453"
-      resolved-ref: "4b450366c90ec7ac2fa4f332600cb756fce82453"
-      url: "https://github.com/polkawallet-io/polkawallet_plugin_kusama.git"
-    source: git
+      path: "../../coding/polkawallet/polkawallet_plugin_kusama"
+      relative: true
+    source: path
     version: "0.3.4"
   polkawallet_plugin_laminar:
     dependency: "direct main"
@@ -917,10 +915,10 @@ packages:
   polkawallet_sdk:
     dependency: "direct overridden"
     description:
-      name: polkawallet_sdk
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.3.5"
+      path: "../../coding/polkawallet/sdk"
+      relative: true
+    source: path
+    version: "0.3.6"
   polkawallet_ui:
     dependency: "direct overridden"
     description:
@@ -1212,7 +1210,7 @@ packages:
       name: webview_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   webview_flutter_android:
     dependency: transitive
     description:

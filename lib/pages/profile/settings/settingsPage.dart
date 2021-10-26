@@ -3,7 +3,7 @@ import 'package:app/service/index.dart';
 import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -84,7 +84,8 @@ class _Settings extends State<SettingsPage> {
         title: Text(dic['setting']),
         centerTitle: true,
       ),
-      body: Observer(
+      body: GetBuilder(
+        init: widget.service.store,
         builder: (_) => SafeArea(
           child: ListView(
             children: <Widget>[

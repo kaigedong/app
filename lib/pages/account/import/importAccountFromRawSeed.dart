@@ -2,7 +2,7 @@ import 'package:app/pages/account/create/accountAdvanceOption.dart';
 import 'package:app/service/index.dart';
 import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_sdk/api/apiKeyring.dart';
 import 'package:polkawallet_sdk/api/types/addressIconData.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
@@ -46,7 +46,8 @@ class _ImportAccountFromRawSeedState extends State<ImportAccountFromRawSeed> {
     return Scaffold(
       appBar: AppBar(title: Text(dic['import']), centerTitle: true),
       body: SafeArea(
-          child: Observer(
+          child: GetBuilder(
+              init: widget.service.store,
               builder: (_) => Column(
                     children: [
                       Expanded(

@@ -13,7 +13,7 @@ import 'package:app/service/walletApi.dart';
 import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
@@ -379,7 +379,8 @@ class _AssetsState extends State<AssetsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
+    return GetBuilder(
+      init: widget.service.store,
       builder: (_) {
         bool transferEnabled = true;
         // todo: fix this after new acala online

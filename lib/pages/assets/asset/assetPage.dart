@@ -7,7 +7,7 @@ import 'package:app/store/types/transferData.dart';
 import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_sdk/api/subscan.dart';
 import 'package:polkawallet_sdk/api/types/balanceData.dart';
@@ -259,7 +259,8 @@ class _AssetPageState extends State<AssetPage> {
       ),
       backgroundColor: titleColor,
       body: SafeArea(
-        child: Observer(
+        child: GetBuilder(
+          init: widget.service.store,
           builder: (_) {
             bool transferEnabled = true;
             if (widget.service.plugin.basic.name == 'karura' ||

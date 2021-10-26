@@ -8,7 +8,7 @@ import 'package:app/service/index.dart';
 import 'package:app/service/walletApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/api/types/parachain/auctionData.dart';
 import 'package:polkawallet_sdk/api/types/parachain/fundData.dart';
@@ -146,7 +146,8 @@ class _CrowdLoanPageState extends State<CrowdLoanPage> {
                     ? RefreshIndicator(
                         key: _refreshKey,
                         onRefresh: _getCrowdLoans,
-                        child: Observer(
+                        child: GetBuilder(
+                          init: widget.service.store,
                           builder: (_) {
                             final auction =
                                 widget.service.store.parachain.auctionData;

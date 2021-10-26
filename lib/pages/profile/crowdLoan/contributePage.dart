@@ -3,7 +3,7 @@ import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:polkawallet_sdk/api/types/parachain/fundData.dart';
 import 'package:polkawallet_sdk/api/types/txInfoData.dart';
@@ -93,7 +93,8 @@ class _ContributePageState extends State<ContributePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
+    return GetBuilder(
+      init: widget.service.store,
       builder: (_) {
         final dic = I18n.of(context).getDic(i18n_full_dic_app, 'assets');
         final symbol =

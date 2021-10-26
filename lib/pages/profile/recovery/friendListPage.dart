@@ -5,7 +5,7 @@ import 'package:app/service/index.dart';
 import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get/get.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
@@ -98,7 +98,8 @@ class _FriendListPage extends State<FriendListPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Observer(
+            GetBuilder(
+              init: widget.service.store,
               builder: (_) {
                 final contacts = widget.service.keyring.allWithContacts;
                 contacts.retainWhere((i) =>
