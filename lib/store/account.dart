@@ -65,8 +65,8 @@ class AccountStore extends GetxController {
     update();
   }
 
-  void setAccountRecoveryInfo(Map json) {
-    recoveryInfo = json != null ? RecoveryInfo.fromJson(json) : RecoveryInfo();
+  void setAccountRecoveryInfo(RecoveryInfo data) {
+    recoveryInfo = data ?? RecoveryInfo();
     update();
   }
 
