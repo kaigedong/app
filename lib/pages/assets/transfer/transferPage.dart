@@ -449,7 +449,7 @@ class _TransferPageState extends State<TransferPage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: widget.service.store,
+      init: widget.service.store.settings,
       builder: (_) {
         final dic = I18n.of(context).getDic(i18n_full_dic_app, 'assets');
         final symbol =

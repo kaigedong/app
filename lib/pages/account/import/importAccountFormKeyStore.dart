@@ -70,91 +70,101 @@ class _ImportAccountFormKeyStoreState extends State<ImportAccountFormKeyStore> {
         appBar: AppBar(title: Text(dic['import']), centerTitle: true),
         body: SafeArea(
           child: GetBuilder(
-              init: widget.service.store,
-              builder: (_) => Column(
-                    children: [
-                      Expanded(
-                          child: Form(
-                              key: _formKey,
-                              child: SingleChildScrollView(
-                                  child: Column(
-                                children: [
-                                  Visibility(
-                                      visible: _addressIcon.svg != null,
-                                      child: Padding(
+              init: widget.service.store.assets,
+              builder: (_) {
+                return GetBuilder(
+                    init: widget.service.store.account,
+                    builder: (_) => Column(
+                          children: [
+                            Expanded(
+                                child: Form(
+                                    key: _formKey,
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                      children: [
+                                        Visibility(
+                                            visible: _addressIcon.svg != null,
+                                            child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 16,
+                                                    right: 16,
+                                                    top: 16),
+                                                child: AddressFormItem(
+                                                    KeyPairData()
+                                                      ..icon = _addressIcon.svg
+                                                      ..address =
+                                                          _addressIcon.address,
+                                                    isShowSubtitle: false))),
+                                        ListTile(
+                                            title: Text(
+                                              dic['import.type'],
+                                            ),
+                                            trailing: Text(dic[selected])),
+                                        Padding(
                                           padding: EdgeInsets.only(
-                                              left: 16, right: 16, top: 16),
-                                          child: AddressFormItem(
-                                              KeyPairData()
-                                                ..icon = _addressIcon.svg
-                                                ..address =
-                                                    _addressIcon.address,
-                                              isShowSubtitle: false))),
-                                  ListTile(
-                                      title: Text(
-                                        dic['import.type'],
-                                      ),
-                                      trailing: Text(dic[selected])),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 16, right: 16),
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        hintText: dic[selected],
-                                        labelText: dic[selected],
-                                      ),
-                                      controller: _keyCtrl,
-                                      maxLines: 2,
-                                      validator: _validateInput,
-                                      onChanged: _onKeyChange,
-                                    ),
-                                  ),
-                                  _buildNameAndPassInput(),
-                                ],
-                              )))),
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        child: RoundedButton(
-                          text: I18n.of(context)
-                              .getDic(i18n_full_dic_ui, 'common')['next'],
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              /// save user account info (keystore & name & pass) from input
-                              widget.service.store.account.setNewAccount(
-                                  _nameCtrl.text.trim(), _passCtrl.text.trim());
-                              widget.service.store.account
-                                  .setNewAccountKey(_keyCtrl.text.trim());
+                                              left: 16, right: 16),
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                              hintText: dic[selected],
+                                              labelText: dic[selected],
+                                            ),
+                                            controller: _keyCtrl,
+                                            maxLines: 2,
+                                            validator: _validateInput,
+                                            onChanged: _onKeyChange,
+                                          ),
+                                        ),
+                                        _buildNameAndPassInput(),
+                                      ],
+                                    )))),
+                            Container(
+                              padding: EdgeInsets.all(16),
+                              child: RoundedButton(
+                                text: I18n.of(context)
+                                    .getDic(i18n_full_dic_ui, 'common')['next'],
+                                onPressed: () async {
+                                  if (_formKey.currentState.validate()) {
+                                    /// save user account info (keystore & name & pass) from input
+                                    widget.service.store.account.setNewAccount(
+                                        _nameCtrl.text.trim(),
+                                        _passCtrl.text.trim());
+                                    widget.service.store.account
+                                        .setNewAccountKey(_keyCtrl.text.trim());
 
-                              final saved = await ImportAccountAction.onSubmit(
-                                  context,
-                                  widget.service,
-                                  {
-                                    'keyType': selected,
-                                  },
-                                  (p0) {});
-                              if (saved) {
-                                if (_supportBiometric && _enableBiometric) {
-                                  await ImportAccountAction.authBiometric(
-                                      context, widget.service);
-                                }
+                                    final saved =
+                                        await ImportAccountAction.onSubmit(
+                                            context,
+                                            widget.service,
+                                            {
+                                              'keyType': selected,
+                                            },
+                                            (p0) {});
+                                    if (saved) {
+                                      if (_supportBiometric &&
+                                          _enableBiometric) {
+                                        await ImportAccountAction.authBiometric(
+                                            context, widget.service);
+                                      }
 
-                                widget.service.plugin.changeAccount(
-                                    widget.service.keyring.current);
-                                widget.service.store.assets.loadCache(
-                                    widget.service.keyring.current,
-                                    widget.service.plugin.basic.name);
-                                widget.service.store.account.resetNewAccount();
-                                widget.service.store.account
-                                    .setAccountCreated();
-                                Navigator.popUntil(
-                                    context, ModalRoute.withName('/'));
-                              }
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  )),
+                                      widget.service.plugin.changeAccount(
+                                          widget.service.keyring.current);
+                                      widget.service.store.assets.loadCache(
+                                          widget.service.keyring.current,
+                                          widget.service.plugin.basic.name);
+                                      widget.service.store.account
+                                          .resetNewAccount();
+                                      widget.service.store.account
+                                          .setAccountCreated();
+                                      Navigator.popUntil(
+                                          context, ModalRoute.withName('/'));
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ));
+              }),
         ));
   }
 

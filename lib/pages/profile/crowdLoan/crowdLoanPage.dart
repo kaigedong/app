@@ -147,7 +147,7 @@ class _CrowdLoanPageState extends State<CrowdLoanPage> {
                         key: _refreshKey,
                         onRefresh: _getCrowdLoans,
                         child: GetBuilder(
-                          init: widget.service.store,
+                          init: widget.service.store.parachain,
                           builder: (_) {
                             final auction =
                                 widget.service.store.parachain.auctionData;

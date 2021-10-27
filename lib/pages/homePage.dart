@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                 .toList(),
           ),
           GetBuilder(
-              init: widget.service.store,
+              init: widget.service.store.account,
               builder: (_) {
                 final walletConnectAlive =
                     widget.service.store.account.wcSessions.length > 0;

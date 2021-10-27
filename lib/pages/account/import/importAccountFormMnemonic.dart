@@ -49,7 +49,7 @@ class _ImportAccountFormMnemonicState extends State<ImportAccountFormMnemonic> {
         appBar: AppBar(title: Text(dic['import']), centerTitle: true),
         body: SafeArea(
           child: GetBuilder(
-              init: widget.service.store,
+              init: widget.service.store.account,
               builder: (_) => Column(
                     children: [
                       Expanded(

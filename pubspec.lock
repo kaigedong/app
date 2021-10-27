@@ -883,11 +883,9 @@ packages:
   polkawallet_plugin_karura:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "5db24a99a47728bac59400f10ce0a426ffd71174"
-      resolved-ref: "5db24a99a47728bac59400f10ce0a426ffd71174"
-      url: "https://github.com/AcalaNetwork/polkawallet_plugin_karura.git"
-    source: git
+      path: "../../coding/polkawallet/polkawallet_plugin_karura"
+      relative: true
+    source: path
     version: "0.3.5"
   polkawallet_plugin_kusama:
     dependency: "direct main"

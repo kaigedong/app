@@ -85,7 +85,7 @@ class _Settings extends State<SettingsPage> {
         centerTitle: true,
       ),
       body: GetBuilder(
-        init: widget.service.store,
+        init: widget.service.store.settings,
         builder: (_) => SafeArea(
           child: ListView(
             children: <Widget>[

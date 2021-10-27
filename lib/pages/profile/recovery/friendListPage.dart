@@ -80,6 +80,12 @@ class _FriendListPage extends State<FriendListPage> {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_app, 'profile');
+    final contacts = widget.service.keyring.allWithContacts;
+    contacts.retainWhere(
+        (i) => _selected.indexWhere((e) => e.address == i.address) < 0);
+    final list = <KeyPairData>[];
+    list.addAll(_selected);
+    list.addAll(contacts);
     return Scaffold(
       appBar: AppBar(
         title: Text(dic['recovery.friends']),
@@ -98,34 +104,23 @@ class _FriendListPage extends State<FriendListPage> {
       body: SafeArea(
         child: Column(
           children: [
-            GetBuilder(
-              init: widget.service.store,
-              builder: (_) {
-                final contacts = widget.service.keyring.allWithContacts;
-                contacts.retainWhere((i) =>
-                    _selected.indexWhere((e) => e.address == i.address) < 0);
-                final list = <KeyPairData>[];
-                list.addAll(_selected);
-                list.addAll(contacts);
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: list.length,
-                    itemBuilder: (_, i) {
-                      bool switchOn = i < _selected.length;
-                      return ListTile(
-                        leading: AddressIcon(list[i].address,
-                            svg: list[i].icon, size: 32),
-                        title: Text(list[i].name),
-                        subtitle: Text(Fmt.address(list[i].address)),
-                        trailing: CupertinoSwitch(
-                          value: switchOn,
-                          onChanged: (res) => _onSwitch(list[i], res),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+            Expanded(
+              child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (_, i) {
+                  bool switchOn = i < _selected.length;
+                  return ListTile(
+                    leading: AddressIcon(list[i].address,
+                        svg: list[i].icon, size: 32),
+                    title: Text(list[i].name),
+                    subtitle: Text(Fmt.address(list[i].address)),
+                    trailing: CupertinoSwitch(
+                      value: switchOn,
+                      onChanged: (res) => _onSwitch(list[i], res),
+                    ),
+                  );
+                },
+              ),
             ),
             Padding(
               padding: EdgeInsets.all(16),

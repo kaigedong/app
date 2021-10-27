@@ -438,7 +438,7 @@ class _WalletAppState extends State<WalletApp> {
             future: _startApp(context),
             builder: (_, AsyncSnapshot<int> snapshot) {
               return GetBuilder(
-                  init: _store ?? AppStore(null),
+                  init: _store.account ?? AppStore(null),
                   builder: (_) {
                     if (snapshot.hasData && _service != null) {
                       return snapshot.data > 0

@@ -387,7 +387,7 @@ class _AcaCrowdLoanFormPageState extends State<AcaCrowdLoanFormPage> {
   @override
   Widget build(_) {
     return GetBuilder(
-        init: widget.service.store,
+        init: widget.service.store.settings,
         builder: (_) {
           final dic = I18n.of(context).getDic(i18n_full_dic_app, 'public');
           final decimals =

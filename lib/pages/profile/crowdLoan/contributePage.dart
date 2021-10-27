@@ -94,7 +94,7 @@ class _ContributePageState extends State<ContributePage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: widget.service.store,
+      init: widget.service.store.parachain,
       builder: (_) {
         final dic = I18n.of(context).getDic(i18n_full_dic_app, 'assets');
         final symbol =

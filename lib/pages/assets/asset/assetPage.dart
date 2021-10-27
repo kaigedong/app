@@ -260,107 +260,114 @@ class _AssetPageState extends State<AssetPage> {
       backgroundColor: titleColor,
       body: SafeArea(
         child: GetBuilder(
-          init: widget.service.store,
+          init: widget.service.store.settings,
           builder: (_) {
-            bool transferEnabled = true;
-            if (widget.service.plugin.basic.name == 'karura' ||
-                widget.service.plugin.basic.name == 'acala') {
-              transferEnabled = false;
-              if (widget.service.store.settings.liveModules['assets'] != null) {
-                transferEnabled = widget
-                    .service.store.settings.liveModules['assets']['enabled'];
-              }
-              if (widget.service.buildTarget == BuildTargets.dev) {
-                transferEnabled = true;
-              }
-            }
+            return GetBuilder(
+                init: widget.service.store.assets,
+                builder: (_) {
+                  bool transferEnabled = true;
+                  if (widget.service.plugin.basic.name == 'karura' ||
+                      widget.service.plugin.basic.name == 'acala') {
+                    transferEnabled = false;
+                    if (widget.service.store.settings.liveModules['assets'] !=
+                        null) {
+                      transferEnabled = widget.service.store.settings
+                          .liveModules['assets']['enabled'];
+                    }
+                    if (widget.service.buildTarget == BuildTargets.dev) {
+                      transferEnabled = true;
+                    }
+                  }
 
-            BalanceData balancesInfo = widget.service.plugin.balances.native;
-            return Column(
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    color: Colors.white,
-                    child: RefreshIndicator(
-                      key: _refreshKey,
-                      onRefresh: _refreshData,
-                      child: ListView(
-                        controller: _scrollController,
-                        children: [
-                          BalanceCard(
-                            balancesInfo,
-                            symbol: symbol,
-                            decimals: decimals,
-                            marketPrices:
-                                widget.service.store.assets.marketPrices,
-                            backgroundImage:
-                                widget.service.plugin.basic.backgroundImage,
-                            unlocks: _unlocks,
-                            onUnlock: _onUnlock,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(16),
-                            child: MainTabBar(
-                              tabs: [dic['all'], dic['in'], dic['out']],
-                              activeTab: _tab,
-                              onTap: (i) {
-                                setState(() {
-                                  _tab = i;
-                                });
-                              },
+                  BalanceData balancesInfo =
+                      widget.service.plugin.balances.native;
+                  return Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          color: Colors.white,
+                          child: RefreshIndicator(
+                            key: _refreshKey,
+                            onRefresh: _refreshData,
+                            child: ListView(
+                              controller: _scrollController,
+                              children: [
+                                BalanceCard(
+                                  balancesInfo,
+                                  symbol: symbol,
+                                  decimals: decimals,
+                                  marketPrices:
+                                      widget.service.store.assets.marketPrices,
+                                  backgroundImage: widget
+                                      .service.plugin.basic.backgroundImage,
+                                  unlocks: _unlocks,
+                                  onUnlock: _onUnlock,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: MainTabBar(
+                                    tabs: [dic['all'], dic['in'], dic['out']],
+                                    activeTab: _tab,
+                                    onTap: (i) {
+                                      setState(() {
+                                        _tab = i;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ..._buildTxList()
+                              ],
                             ),
                           ),
-                          ..._buildTxList()
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                        child: RoundedButton(
-                          icon:
-                              Icon(Icons.qr_code, color: titleColor, size: 24),
-                          text: dic['receive'],
-                          color: colorIn,
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, AccountQrCodePage.route);
-                          },
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(8, 8, 16, 8),
-                        child: RoundedButton(
-                          icon: SizedBox(
-                            height: 20,
-                            child: Image.asset('assets/images/assets_send.png'),
-                          ),
-                          text: dic['transfer'],
-                          color: colorOut,
-                          onPressed: transferEnabled
-                              ? () {
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                              child: RoundedButton(
+                                icon: Icon(Icons.qr_code,
+                                    color: titleColor, size: 24),
+                                text: dic['receive'],
+                                color: colorIn,
+                                onPressed: () {
                                   Navigator.pushNamed(
-                                    context,
-                                    TransferPage.route,
-                                    arguments: TransferPageParams(
-                                      redirect: AssetPage.route,
-                                    ),
-                                  );
-                                }
-                              : null,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            );
+                                      context, AccountQrCodePage.route);
+                                },
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(8, 8, 16, 8),
+                              child: RoundedButton(
+                                icon: SizedBox(
+                                  height: 20,
+                                  child: Image.asset(
+                                      'assets/images/assets_send.png'),
+                                ),
+                                text: dic['transfer'],
+                                color: colorOut,
+                                onPressed: transferEnabled
+                                    ? () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          TransferPage.route,
+                                          arguments: TransferPageParams(
+                                            redirect: AssetPage.route,
+                                          ),
+                                        );
+                                      }
+                                    : null,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                });
           },
         ),
       ),
