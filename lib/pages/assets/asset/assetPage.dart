@@ -474,17 +474,17 @@ class BalanceCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          tokenPrice != null
-              ? Padding(
-                  padding: EdgeInsets.only(bottom: 16),
-                  child: Text(
-                    '≈ \$ ${tokenPrice ?? '--.--'}',
-                    style: TextStyle(
-                      color: Theme.of(context).cardColor,
-                    ),
+          Visibility(
+              visible: tokenPrice != null,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16),
+                child: Text(
+                  '≈ \$ ${tokenPrice ?? '--.--'}',
+                  style: TextStyle(
+                    color: Theme.of(context).cardColor,
                   ),
-                )
-              : Container(),
+                ),
+              )),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -542,8 +542,9 @@ class BalanceCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      lockedInfo.length > 2
-                          ? hasVesting
+                      Visibility(
+                          visible: lockedInfo.length > 2,
+                          child: hasVesting
                               ? GestureDetector(
                                   child: Container(
                                     padding: EdgeInsets.only(right: 4),
@@ -561,8 +562,7 @@ class BalanceCard extends StatelessWidget {
                                         size: 16, color: titleColor),
                                   ),
                                   waitDuration: Duration(seconds: 0),
-                                )
-                          : Container(),
+                                )),
                       Text(
                         Fmt.priceFloorBigInt(
                           Fmt.balanceInt(
@@ -572,19 +572,19 @@ class BalanceCard extends StatelessWidget {
                         ),
                         style: TextStyle(color: titleColor),
                       ),
-                      unlocks.length > 0
-                          ? GestureDetector(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 6),
-                                child: Icon(
-                                  Icons.lock_open,
-                                  size: 16,
-                                  color: titleColor,
-                                ),
+                      Visibility(
+                          visible: unlocks.length > 0,
+                          child: GestureDetector(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 6),
+                              child: Icon(
+                                Icons.lock_open,
+                                size: 16,
+                                color: titleColor,
                               ),
-                              onTap: onUnlock,
-                            )
-                          : Container(),
+                            ),
+                            onTap: onUnlock,
+                          )),
                     ],
                   ),
                   Text(

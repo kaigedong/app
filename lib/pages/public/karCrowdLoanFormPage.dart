@@ -349,14 +349,14 @@ class _KarCrowdLoanFormPageState extends State<KarCrowdLoanFormPage> {
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 16, bottom: 4),
-                  child: _amount == 0 || _amountValid
-                      ? Container()
-                      : Text(
-                          _amountEnough
-                              ? '${dic['auction.invalid']} ${dic['auction.amount.error']}'
-                              : dic['balance.insufficient'],
-                          style: errorStyle,
-                        ),
+                  child: Visibility(
+                      visible: _amount > 0 && !_amountValid,
+                      child: Text(
+                        _amountEnough
+                            ? '${dic['auction.invalid']} ${dic['auction.amount.error']}'
+                            : dic['balance.insufficient'],
+                        style: errorStyle,
+                      )),
                 ),
                 _getTitle(dic['auction.referral']),
                 Container(
@@ -382,12 +382,12 @@ class _KarCrowdLoanFormPageState extends State<KarCrowdLoanFormPage> {
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 16, bottom: 4),
-                  child: _referral.isEmpty || _referralValid
-                      ? Container()
-                      : Text(
-                          '${dic['auction.invalid']} ${dic['auction.referral']}',
-                          style: errorStyle,
-                        ),
+                  child: Visibility(
+                      visible: _referral.isNotEmpty && !_referralValid,
+                      child: Text(
+                        '${dic['auction.invalid']} ${dic['auction.referral']}',
+                        style: errorStyle,
+                      )),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 16),
@@ -414,10 +414,10 @@ class _KarCrowdLoanFormPageState extends State<KarCrowdLoanFormPage> {
                                   ? ' + ${Fmt.priceFloor(acaPromotion, lengthMax: 4)} ACA'
                                   : ''),
                           style: karStyle),
-                      _amountKar > 0
-                          ? RewardDetailPanel(_amountKar, _referralValid,
-                              params.promotion, karPromotion, acaPromotion)
-                          : Container(),
+                      Visibility(
+                          visible: _amountKar > 0,
+                          child: RewardDetailPanel(_amountKar, _referralValid,
+                              params.promotion, karPromotion, acaPromotion)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -535,45 +535,45 @@ class RewardDetailPanel extends StatelessWidget {
                   style: karAmountStyle),
             ],
           ),
-          referralValid
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        child: Text('+5% ${dic['auction.invite']}',
-                            style: karInfoStyle)),
-                    Text(
-                        '+ ${Fmt.priceFloor(karAmount * 0.05, lengthMax: 4)} KAR',
-                        style: karInfoStyle),
-                  ],
-                )
-              : Container(),
-          karPromotion > 0
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        child: Text(
-                            '+${Fmt.ratio(promotion['karRate'])} ${promotion['name']}',
-                            style: karInfoStyle)),
-                    Text('+ ${Fmt.priceFloor(karPromotion, lengthMax: 4)} KAR',
-                        style: karInfoStyle),
-                  ],
-                )
-              : Container(),
-          acaPromotion > 0
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        child: Text(
-                            '+${Fmt.ratio(promotion['acaRate'])} ${promotion['name']}',
-                            style: karInfoStyle)),
-                    Text('+ ${Fmt.priceFloor(acaPromotion, lengthMax: 4)} ACA',
-                        style: karInfoStyle),
-                  ],
-                )
-              : Container(),
+          Visibility(
+              visible: referralValid,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Text('+5% ${dic['auction.invite']}',
+                          style: karInfoStyle)),
+                  Text(
+                      '+ ${Fmt.priceFloor(karAmount * 0.05, lengthMax: 4)} KAR',
+                      style: karInfoStyle),
+                ],
+              )),
+          Visibility(
+              visible: karPromotion > 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Text(
+                          '+${Fmt.ratio(promotion['karRate'])} ${promotion['name']}',
+                          style: karInfoStyle)),
+                  Text('+ ${Fmt.priceFloor(karPromotion, lengthMax: 4)} KAR',
+                      style: karInfoStyle),
+                ],
+              )),
+          Visibility(
+              visible: acaPromotion > 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Text(
+                          '+${Fmt.ratio(promotion['acaRate'])} ${promotion['name']}',
+                          style: karInfoStyle)),
+                  Text('+ ${Fmt.priceFloor(acaPromotion, lengthMax: 4)} ACA',
+                      style: karInfoStyle),
+                ],
+              )),
         ],
       ),
     );
