@@ -24,7 +24,7 @@ class _WCSessionsPageState extends State<WCSessionsPage> {
     final dic = I18n.of(context).getDic(i18n_full_dic_app, 'account');
 
     return GetBuilder(
-        init: widget.service.store,
+        init: widget.service.store.account,
         builder: (_) {
           final sessions = widget.service.store.account.wcSessions;
           return Scaffold(

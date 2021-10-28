@@ -3,9 +3,8 @@ import 'package:app/store/assets.dart';
 import 'package:app/store/parachain.dart';
 import 'package:app/store/settings.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:get/get.dart';
 
-class AppStore extends GetxController {
+class AppStore {
   AppStore(this.storage);
 
   final GetStorage storage;

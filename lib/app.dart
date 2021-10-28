@@ -45,6 +45,7 @@ import 'package:app/pages/walletConnect/wcPairingConfirmPage.dart';
 import 'package:app/pages/walletConnect/wcSessionsPage.dart';
 import 'package:app/service/index.dart';
 import 'package:app/service/walletApi.dart';
+import 'package:app/store/account.dart';
 import 'package:app/store/index.dart';
 import 'package:app/utils/UI.dart';
 import 'package:app/utils/Utils.dart';
@@ -438,7 +439,7 @@ class _WalletAppState extends State<WalletApp> {
             future: _startApp(context),
             builder: (_, AsyncSnapshot<int> snapshot) {
               return GetBuilder(
-                  init: _store?.account ?? AppStore(null),
+                  init: _store?.account ?? AccountStore(),
                   builder: (_) {
                     if (snapshot.hasData && _service != null) {
                       return snapshot.data > 0

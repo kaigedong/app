@@ -163,7 +163,7 @@ class _RecoverySettingPage extends State<RecoverySettingPage> {
       appBar: AppBar(title: Text(dic['recovery']), centerTitle: true),
       body: SafeArea(
         child: GetBuilder(
-          init: widget.service.store,
+          init: widget.service.store.account,
           builder: (_) {
             final isKSMOrDOT = widget.service.plugin.basic.name == 'kusama' ||
                 widget.service.plugin.basic.name == 'polkadot';
