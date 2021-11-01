@@ -738,6 +738,7 @@ class _AssetsState extends State<AssetsPage> {
                             ),
                           ),
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               _buildTopCard(context, transferEnabled),
                               Expanded(child: Container()),
@@ -751,7 +752,9 @@ class _AssetsState extends State<AssetsPage> {
                                       widget.service,
                                       widget.connectedNode,
                                       widget.switchNetwork,
-                                      canClose: true))
+                                      canClose:
+                                          widget.service.plugin.basic.name !=
+                                              relay_chain_name_dot))
                             ],
                           )
                         ],
