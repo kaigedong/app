@@ -55,7 +55,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile rootProject.file("app/io.polkawallet.polkawallet.jks")
+            storeFile rootProject.file("app/io.dbcwallet.dbcwallet.jks")
             storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
             keyAlias System.getenv("APPCENTER_KEY_ALIAS")
             keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
