@@ -139,7 +139,7 @@ class AppUI {
                   if (buildTarget == BuildTargets.playStore) {
                     // go to google play page
                     UI.launchURL(
-                        'https://play.google.com/store/apps/details?id=io.polkawallet.www.polka_wallet');
+                        'https://play.google.com/store/apps/details?id=io.polkawallet.www.dbc_wallet');
                     return;
                   }
                   // download apk

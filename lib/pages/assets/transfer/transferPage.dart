@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
+// import 'package:polkawallet_plugin_chainx/common/components/UI.dart';
+import 'package:polkawallet_ui/utils/numberInputFormatter.dart';
 import 'package:polkawallet_sdk/api/types/txInfoData.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
@@ -642,7 +643,9 @@ class _TransferPageState extends State<TransferPage> {
                                             ),
                                           ),
                                           inputFormatters: [
-                                            UI.decimalInputFormatter(decimals)
+                                            // UI.decimalInputFormatter(decimals)
+                                            NumberInputFormatter.withRegex(
+                                                '^[0-9]{0,$decimals}((\\.|,)[0-9]{0,$decimals})?\$')
                                           ],
                                           controller: _amountCtrl,
                                           keyboardType:

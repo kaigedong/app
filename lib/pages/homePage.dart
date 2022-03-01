@@ -12,7 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
-import 'package:polkawallet_plugin_kusama/common/constants.dart';
+// import 'package:polkawallet_plugin_kusama/common/constants.dart';
+import 'package:polkawallet_plugin_dbc/common/constants.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
 import 'package:polkawallet_sdk/plugin/homeNavItem.dart';
 import 'package:polkawallet_sdk/plugin/index.dart';
@@ -218,7 +219,7 @@ class _HomePageState extends State<HomePage> {
       content: ProfilePage(
         widget.service,
         widget.connectedNode,
-        () async => widget.switchNetwork(network_name_kusama),
+        () async => widget.switchNetwork(network_name_dbc),
       ),
     ));
     return BottomBarScaffold(

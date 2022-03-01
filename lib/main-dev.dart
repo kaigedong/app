@@ -7,12 +7,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:polkawallet_plugin_acala/polkawallet_plugin_acala.dart';
-import 'package:polkawallet_plugin_bifrost/polkawallet_plugin_bifrost.dart';
-import 'package:polkawallet_plugin_edgeware/polkawallet_plugin_edgeware.dart';
-import 'package:polkawallet_plugin_karura/polkawallet_plugin_karura.dart';
-import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
-import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
+// import 'package:polkawallet_plugin_acala/polkawallet_plugin_acala.dart';
+// import 'package:polkawallet_plugin_bifrost/polkawallet_plugin_bifrost.dart';
+// import 'package:polkawallet_plugin_edgeware/polkawallet_plugin_edgeware.dart';
+// import 'package:polkawallet_plugin_karura/polkawallet_plugin_karura.dart';
+// import 'package:polkawallet_plugin_kusama/polkawallet_plugin_kusama.dart';
+// import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
+import 'package:polkawallet_plugin_dbc/polkawallet_plugin_dbc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,15 +25,16 @@ void main() async {
   var appVersionCode = await Utils.getBuildNumber();
 
   final plugins = [
-    PluginKusama(name: 'polkadot'),
-    PluginKusama(),
-    PluginKarura(),
-    PluginStatemine(),
-    PluginAcala(),
-    PluginBifrost(),
+    // PluginKusama(name: 'polkadot'),
+    // PluginKusama(),
+    // PluginKarura(),
+    // PluginStatemine(),
+    // PluginAcala(),
+    // PluginBifrost(),
     // PluginChainX(),
-    PluginEdgeware(),
+    // PluginEdgeware(),
     // PluginLaminar(),
+    PluginDBC(),
   ];
 
   final pluginsConfig = await WalletApi.getPluginsConfig(BuildTargets.dev);
