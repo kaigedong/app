@@ -1,5 +1,5 @@
 name: app
-description: Polkawallet built with Flutter.
+description: dbcwallet built with Flutter.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -70,10 +70,10 @@ dependencies:
   #   git:
   #     url: https://github.com/bifrost-finance/polkawallet_plugin_bifrost.git
   #     ref: 87c54fe160c88992d04c8ce30ef23fe09e9732af
-  polkawallet_plugin_chainx:
-    git:
-      url: https://github.com/chainx-org/polkawallet_plugin_chainx.git
-      ref: 2cc634bc4f0b873e7fe0801d5d3fba46756f5315
+  # polkawallet_plugin_chainx:
+  #   git:
+  #     url: https://github.com/chainx-org/polkawallet_plugin_chainx.git
+  #     ref: 2cc634bc4f0b873e7fe0801d5d3fba46756f5315
   # polkawallet_plugin_edgeware:
   #   git:
   #     url: https://github.com/remzrn/polkawallet_plugin_edgeware.git

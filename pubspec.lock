@@ -660,15 +660,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
-  polkawallet_plugin_chainx:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "2cc634bc4f0b873e7fe0801d5d3fba46756f5315"
-      resolved-ref: "2cc634bc4f0b873e7fe0801d5d3fba46756f5315"
-      url: "https://github.com/chainx-org/polkawallet_plugin_chainx.git"
-    source: git
-    version: "0.0.2"
   polkawallet_plugin_dbc:
     dependency: "direct overridden"
     description:
