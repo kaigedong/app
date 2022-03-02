@@ -50,8 +50,8 @@ import 'package:app/startPage.dart';
 import 'package:app/store/index.dart';
 import 'package:app/utils/UI.dart';
 import 'package:app/utils/i18n/index.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,7 +110,7 @@ class WalletApp extends StatefulWidget {
 }
 
 class _WalletAppState extends State<WalletApp> {
-  final _analytics = FirebaseAnalytics();
+  // final _analytics = FirebaseAnalytics();
 
   Keyring _keyring;
 
@@ -685,7 +685,7 @@ class _WalletAppState extends State<WalletApp> {
                 onGenerateRoute: (settings) => CupertinoPageRoute(
                     builder: routes[settings.name], settings: settings),
                 navigatorObservers: [
-                  FirebaseAnalyticsObserver(analytics: _analytics)
+                  // FirebaseAnalyticsObserver(analytics: _analytics)
                 ],
               )),
     );
