@@ -66,7 +66,7 @@ class AppUI {
       {bool autoCheck = false}) async {
     // if (versions == null || !Platform.isAndroid && !Platform.isIOS) return;
     // NOTE: This will disable update check!
-    if (versions == null || Platform.isAndroid && Platform.isIOS) return;
+    if (versions == null || Platform.isAndroid || Platform.isIOS) return;
     String platform = Platform.isAndroid ? 'android' : 'ios';
     final Map dic = I18n.of(context).getDic(i18n_full_dic_app, 'profile');
 
@@ -141,7 +141,7 @@ class AppUI {
                   if (buildTarget == BuildTargets.playStore) {
                     // go to google play page
                     UI.launchURL(
-                        'https://play.google.com/store/apps/details?id=io.polkawallet.www.dbc_wallet');
+                        'https://play.google.com/store/apps/details?id=io.dbcwallet.www.dbcwallet');
                     return;
                   }
                   // download apk
