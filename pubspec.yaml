@@ -42,10 +42,10 @@ dependencies:
   #  firebase_messaging: 10.0.5
   fl_chart: ^0.45.0
 
-  jpush_flutter:
-    git:
-      url: https://github.com/polkawallet-io/jpush-flutter-plugin.git
-      ref: a2ee9893ec9115a15bb25d4a59c7cbaa447e14b6
+  # jpush_flutter:
+  #   git:
+  #     url: https://github.com/polkawallet-io/jpush-flutter-plugin.git
+  #     ref: a2ee9893ec9115a15bb25d4a59c7cbaa447e14b6
   # polkawallet_plugin_kusama:
   #   git:
   #     url: https://github.com/polkawallet-io/polkawallet_plugin_kusama.git
@@ -96,6 +96,9 @@ dependency_overrides:
     git:
       url: https://github.com/DeepBrainChain/PolkaWallet_Plugin_DBC.git
       ref: "main"
+
+  # polkawallet_plugin_dbc:
+  #   path: ../PolkaWallet_Plugin_DBC
 
   # polkawallet_plugin_kusama:
   #   path: ../../coding/polkawallet/polkawallet_plugin_kusama

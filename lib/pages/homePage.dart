@@ -11,7 +11,7 @@ import 'package:app/utils/i18n/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
+// import 'package:jpush_flutter/jpush_flutter.dart';
 // import 'package:polkawallet_plugin_kusama/common/constants.dart';
 import 'package:polkawallet_plugin_dbc/common/constants.dart';
 import 'package:polkawallet_sdk/api/types/networkParams.dart';
@@ -42,7 +42,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
-  final _jPush = JPush();
+  // final _jPush = JPush();
 
   int _tabIndex = 0;
 
@@ -55,38 +55,38 @@ class _HomePageState extends State<HomePage> {
     // await widget.service.plugin.sdk.api.walletConnect.connect(uri);
   }
 
-  Future<void> _setupJPush() async {
-    _jPush.addEventHandler(
-      onOpenNotification: (Map<String, dynamic> message) async {
-        print('flutter onOpenNotification:');
-        print(message);
-        Map params;
-        if (Platform.isIOS) {
-          params = message['extras'];
-        } else {
-          params = message['extras']['cn.jpush.android.EXTRA'] != null
-              ? jsonDecode(message['extras']['cn.jpush.android.EXTRA'])
-              : null;
-        }
-        print(params);
-        if (params != null) {
-          _onOpenNotification(params);
-        }
-      },
-    );
+  // Future<void> _setupJPush() async {
+  //   _jPush.addEventHandler(
+  //     onOpenNotification: (Map<String, dynamic> message) async {
+  //       print('flutter onOpenNotification:');
+  //       print(message);
+  //       Map params;
+  //       if (Platform.isIOS) {
+  //         params = message['extras'];
+  //       } else {
+  //         params = message['extras']['cn.jpush.android.EXTRA'] != null
+  //             ? jsonDecode(message['extras']['cn.jpush.android.EXTRA'])
+  //             : null;
+  //       }
+  //       print(params);
+  //       if (params != null) {
+  //         _onOpenNotification(params);
+  //       }
+  //     },
+  //   );
 
-    _jPush.setup(
-      appKey: JPUSH_APP_KEY,
-      production: false,
-      debug: true,
-    );
-    _jPush.applyPushAuthority(
-        new NotificationSettingsIOS(sound: true, alert: true, badge: false));
+  //   _jPush.setup(
+  //     appKey: JPUSH_APP_KEY,
+  //     production: false,
+  //     debug: true,
+  //   );
+  //   _jPush.applyPushAuthority(
+  //       new NotificationSettingsIOS(sound: true, alert: true, badge: false));
 
-    _jPush.getRegistrationID().then((rid) {
-      print("flutter get registration id : $rid");
-    });
-  }
+  //   _jPush.getRegistrationID().then((rid) {
+  //     print("flutter get registration id : $rid");
+  //   });
+  // }
 
   Future<void> _onOpenNotification(Map params) async {
     final network = params['network'];
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
       widget.service.account
           .checkBannerStatus(widget.service.keyring.current.pubKey);
 
-      _setupJPush();
+      // _setupJPush();
     });
   }
 
